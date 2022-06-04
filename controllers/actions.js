@@ -1,6 +1,9 @@
 
 module.exports.cAllActions = async (req, res) => {
   const user = req.user;
+
+  if (!user) return res.status(500).json({ message: "server error" });
+
   const allActions = await user.getActions({
     attributes: ['title', 'body', 'img', 'id']
   });
@@ -10,6 +13,9 @@ module.exports.cAllActions = async (req, res) => {
 
 module.exports.cSingleAction = async (req, res) => {
   const user = req.user;
+
+  if (!user) return res.status(500).json({ message: "server error" });
+
   const action = (await user.getActions({
     attributes: ['title', 'body', 'img', 'id'],
     where: {
@@ -21,6 +27,9 @@ module.exports.cSingleAction = async (req, res) => {
 
 module.exports.cNewAction = async (req, res) => {
   const user = req.user;
+
+  if (!user) return res.status(500).json({ message: "server error" });
+
   const title = req.body.title;
   const body = req.body.body;
   const file = req.file;
@@ -41,6 +50,8 @@ module.exports.cNewAction = async (req, res) => {
 module.exports.cDeleteAction = async (req, res) => {
   const user = req.user;
   const id = req.body.id;
+
+  if (!user) return res.status(500).json({ message: "server error" });
 
   const action = (await user.getActions({
     attributes: ['title', 'body', 'img', 'id'],
