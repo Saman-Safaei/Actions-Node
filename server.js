@@ -9,6 +9,7 @@ const { relativePath } = require("./utils/relative_path");
 async function createApp() {
     const server = express();
     const filesDir = relativePath("files");
+    const port = process.env.PORT || 3030;
 
     // setup cors
     server.use(cors({ origin: "*" }));
@@ -19,7 +20,7 @@ async function createApp() {
     server.use(usersRouter);
 
     await db.sync();
-    server.listen(3030, () => console.log("Server started at http://localhost:3030 ."));
+    server.listen(port, () => console.log("Server started at http://localhost:3030 ."));
 }
 
 module.exports.createApp = createApp;
