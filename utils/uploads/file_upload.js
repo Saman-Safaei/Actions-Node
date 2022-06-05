@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
         const currentDate = new Date();
         const dateString = currentDate.getFullYear() + "_" 
             + (currentDate.getMonth() + 1) + "_" 
-            + (currentDate.getDay() + 1) + "_" 
+            + (currentDate.getDate()) + "_" 
             + (currentDate.getHours()) + currentDate.getMinutes() + currentDate.getSeconds();
         const fileExtension = file.originalname.split(".").pop();
         
