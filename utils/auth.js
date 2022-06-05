@@ -26,6 +26,8 @@ module.exports.auth = async (req, res, next) => {
       const parsed = jwt.verify(token, secretKey);
       // find user from database.
       const user = await User.findOne({ where: { id: parsed.id } });
+      // check user !== null
+      if (!user) return res.status(401).json({ message: "Unauthorized - Token not valid." })
       // attach user to req.
       req.user = user;
       // call next function.
