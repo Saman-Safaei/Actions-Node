@@ -1,8 +1,8 @@
+const removeFile = require("../utils/database/file_remover");
 
+// Get All Action Middleware ----------------------------------------
 module.exports.cAllActions = async (req, res) => {
   const user = req.user;
-
-  if (!user) return res.status(500).json({ message: "server error" });
 
   const allActions = await user.getActions({
     attributes: ['title', 'body', 'img', 'id']
@@ -11,10 +11,9 @@ module.exports.cAllActions = async (req, res) => {
   res.json(allActions);
 }
 
+// Get a specific Action Middleware ---------------------------------
 module.exports.cSingleAction = async (req, res) => {
   const user = req.user;
-
-  if (!user) return res.status(500).json({ message: "server error" });
 
   const action = (await user.getActions({
     attributes: ['title', 'body', 'img', 'id'],
@@ -25,10 +24,9 @@ module.exports.cSingleAction = async (req, res) => {
   (action) ? res.json(action) : res.status(404).send("Not Found");
 }
 
+// Create a new action with post method -----------------------------
 module.exports.cNewAction = async (req, res) => {
   const user = req.user;
-
-  if (!user) return res.status(500).json({ message: "server error" });
 
   const title = req.body.title;
   const body = req.body.body;
@@ -47,11 +45,10 @@ module.exports.cNewAction = async (req, res) => {
   }
 }
 
+// Delete an action with delete method ------------------------------
 module.exports.cDeleteAction = async (req, res) => {
   const user = req.user;
   const id = req.body.id;
-
-  if (!user) return res.status(500).json({ message: "server error" });
 
   const action = (await user.getActions({
     attributes: ['title', 'body', 'img', 'id'],
@@ -63,6 +60,7 @@ module.exports.cDeleteAction = async (req, res) => {
   if (!action) return res.status(404).json({ deleted: false });
 
   try {
+    removeFile(action.img);
     await action.destroy();
     res.status(200).json({ deleted: true });
   } catch (err) {
