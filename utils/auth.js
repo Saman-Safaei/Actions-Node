@@ -16,8 +16,35 @@ module.exports.parse = (token) => {
   }
 }
 
-module.exports.auth = async (req, res, next) => {
+module.exports.headerAuth = async (req, res, next) => {
   const token = req.get("token");
+
+  if (token) {
+    // token provided.
+    try {
+      // parse the token.
+      const parsed = jwt.verify(token, secretKey);
+      // find user from database.
+      const user = await User.findOne({ where: { id: parsed.id } });
+      // check user !== null
+      if (!user) return res.status(401).json({ message: "Unauthorized - Token not valid." })
+      // attach user to req.
+      req.user = user;
+      // call next function.
+      return next();
+
+    } catch (err) {
+      // Error to find or parse the token.
+      return res.status(401).json({ message: "Unauthorized - Token not valid." });
+    }
+  }
+
+  res.status(400).json({ message: "Token not provided." });
+
+}
+
+module.exports.paramAuth = async (req, res, next) => {
+  const token = req.params.token;
 
   if (token) {
     // token provided.
