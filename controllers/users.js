@@ -1,11 +1,11 @@
 const bcrypt = require("bcrypt");
 
 const db = require("../utils/database/database");
-const { sign } = require("../utils/auth");
-const { UserValidator } = require("../utils/validators");
-const {sendAuthMail} = require("../utils/mail");
+const { sign } = require("../utils/auth"); // for generate login token for use the api
+const { UserValidator } = require("../utils/validators"); // for validate user data
+const { sendAuthMail } = require("../utils/mail"); // for generate mail template and send it to user
 
-const { User } = db.models;
+const { User } = db.models; // get user model for login - register
 
 
 // require json parser. method: POST
@@ -59,11 +59,11 @@ module.exports.cLogin = async (req, res) => {
 module.exports.cAuth = async (req, res) => {
   // get list of users email
   const listOfUsers = await User.findAll({ where: { verified: false }, attributes: ['email', 'id'] });
-  const hash = req.query.t; // get hash from query params
+  const hash = req.query.t; // get hash from query params ( t stands for token ... but it's the hash)
   let verifyProcessSuccessful = false;
   // Loop over not verified emails and validate it if hash is valid
-  for(const user of listOfUsers) {
-    const validated = bcrypt.compareSync(user.email, req.query.t);
+  for (const user of listOfUsers) {
+    const validated = bcrypt.compareSync(user.email, hash);
 
     if (validated) {
       user.verified = true;
