@@ -5,7 +5,7 @@ const db = require("../utils/database/database");
 
 const { User } = db.models;
 
-// Require Auth Middleware --- have a filename param
+// Require ParamAuth Middleware --- have a filename param
 module.exports.cSendFile = (req, res) => {
     const user = req.user;
     const filename = req.params.filename;
