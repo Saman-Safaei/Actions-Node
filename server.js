@@ -12,7 +12,7 @@ async function createApp() {
     // setup cors
     server.use(cors({ origin: "*" }));
     // register routers
-    server.use("/files", filesRouter);
+    server.use(filesRouter);
     server.use(actionsRouter);
     server.use(usersRouter);
 
