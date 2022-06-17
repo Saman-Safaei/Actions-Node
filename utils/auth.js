@@ -44,7 +44,7 @@ module.exports.headerAuth = async (req, res, next) => {
 }
 
 module.exports.paramAuth = async (req, res, next) => {
-  const token = req.params.token;
+  const token = req.query.token;
 
   if (token) {
     // token provided.
