@@ -6,9 +6,9 @@ const upload = require("../utils/uploads/file_upload");
 
 const { cAllActions, cNewAction, cSingleAction, cDeleteAction } = require("../controllers/actions");
 
-router.get("/actions", auth.auth, cAllActions);
-router.get("/actions/:id([0-9]+)", auth.auth, cSingleAction);
-router.post("/actions", auth.auth, upload.single('avatar'), cNewAction);
-router.delete("/actions", auth.auth, express.json(), cDeleteAction);
+router.get("/actions", auth.headerAuth, cAllActions);
+router.get("/actions/:id([0-9]+)", auth.headerAuth, cSingleAction);
+router.post("/actions", auth.headerAuth, upload.single('avatar'), cNewAction);
+router.delete("/actions", auth.headerAuth, express.json(), cDeleteAction);
 
 module.exports = router;
