@@ -2,20 +2,17 @@ const express = require("express");
 const cors = require("cors");
 
 const db = require("./utils/database/database");
-const { actionsRouter, usersRouter } = require("./routes");
-const { relativePath } = require("./utils/relative_path");
+const { actionsRouter, usersRouter, filesRouter } = require("./routes");
 
 
 async function createApp() {
     const server = express();
-    const filesDir = relativePath("files");
     const port = process.env.PORT || 3030;
 
     // setup cors
     server.use(cors({ origin: "*" }));
-    // serve static files
-    server.use("/files", express.static(filesDir));
     // register routers
+    server.use("/files", filesRouter);
     server.use(actionsRouter);
     server.use(usersRouter);
 
