@@ -1,5 +1,6 @@
 module.exports = (user, hash) => {
-  return "<h1>Actions</h1>" + 
+  return "<h1>Actions</h1>" +
     `<p>Welcome to our service dear ${user}.</p>` +
-    `<a href='${"http://localhost:3030/auth/?t=" + hash}'>Verify Your Email</a>`;
+    `<p>Copy this url to your browser or click to <a href='${process.env.ORIGIN}/auth/?t=${hash}'>this link</a> .</p>` +
+    `<p><strong>${process.env.ORIGIN}/auth/?t=${hash}</strong></p>` ;
 }
