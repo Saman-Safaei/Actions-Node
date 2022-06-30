@@ -1,8 +1,8 @@
 # Actions Node
-This project requires two environment variables to start :
-- GPASS
-- SECRET
-- ORIGIN
+This project requires three environment variables to start :
+- GPASS - password of gmail
+- SECRET - Secret key for use in jsonwebtoken
+- ORIGIN - that url which express run into it
 
 ## Commands
 ```sh
