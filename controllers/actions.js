@@ -5,24 +5,26 @@ module.exports.cAllActions = async (req, res) => {
   const user = req.user;
 
   const allActions = await user.getActions({
-    attributes: ['title', 'body', 'img', 'id']
+    attributes: ["title", "body", "img", "id"],
   });
 
   res.json(allActions);
-}
+};
 
 // Get a specific Action Middleware ---------------------------------
 module.exports.cSingleAction = async (req, res) => {
   const user = req.user;
 
-  const action = (await user.getActions({
-    attributes: ['title', 'body', 'img', 'id'],
-    where: {
-      id: req.params.id
-    }
-  }))[0];
-  (action) ? res.json(action) : res.status(404).send("Not Found");
-}
+  const action = (
+    await user.getActions({
+      attributes: ["title", "body", "img", "id"],
+      where: {
+        id: req.params.id,
+      },
+    })
+  )[0];
+  action ? res.json(action) : res.status(404).send("Not Found");
+};
 
 // Create a new action with post method -----------------------------
 module.exports.cNewAction = async (req, res) => {
@@ -36,26 +38,28 @@ module.exports.cNewAction = async (req, res) => {
     await user.createAction({
       title: title,
       body: body,
-      img: file.filename
+      img: file.filename,
     });
 
     res.status(201).json({ created: true });
   } else {
     res.status(400).json({ created: false });
   }
-}
+};
 
 // Delete an action with delete method ------------------------------
 module.exports.cDeleteAction = async (req, res) => {
   const user = req.user;
   const id = req.body.id;
 
-  const action = (await user.getActions({
-    attributes: ['title', 'body', 'img', 'id'],
-    where: {
-      id
-    }
-  }))[0];
+  const action = (
+    await user.getActions({
+      attributes: ["title", "body", "img", "id"],
+      where: {
+        id,
+      },
+    })
+  )[0];
 
   if (!action) return res.status(404).json({ deleted: false });
 
@@ -66,4 +70,4 @@ module.exports.cDeleteAction = async (req, res) => {
   } catch (err) {
     res.status(500).json({ deleted: false });
   }
-}
+};
