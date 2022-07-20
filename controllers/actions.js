@@ -71,3 +71,43 @@ module.exports.cDeleteAction = async (req, res) => {
     res.status(500).json({ deleted: false });
   }
 };
+
+// Edit an action with post method ----------------------------------
+module.exports.cEditAction = async (req, res) => {
+  const user = req.user;
+  const id = req.body.id;
+  const body = req.body.body;
+  const title = req.body.title;
+
+  if (
+    title === undefined ||
+    title === null ||
+    body === undefined ||
+    body === null ||
+    id === undefined ||
+    id === null
+  )
+    return res.status(400).json({ message: "Invalid params." });
+
+  const action = (
+    await user.getActions({
+      attributes: ["title", "body", "id"],
+      where: {
+        id,
+      },
+    })
+  )[0];
+
+  if (!action) return res.status(404).json({ message: "Action not found." });
+
+  action.title = title;
+  action.body = body;
+
+  try {
+    await action.save();
+  } catch (err) {
+    return res.status(500).json({ message: "Server Error." });
+  }
+
+  res.json({ message: "Action successfully edited." });
+};
